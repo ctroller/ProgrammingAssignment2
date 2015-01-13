@@ -8,16 +8,18 @@
 # @param x the matrix to make fancy
 # @return a list of attributes (set, get, setInverse, getInverse) for the given matrix
 makeCacheMatrix <- function(x = matrix()) {
-    mInverse <- NULL
+    mInverse <- NULL # default our inversion to NULL
     
+    # 'resets' the special matrix by assigning a new matrix
     set <- function(y) {
         x <<- y
         mInverse <<- NULL
     }
-    get <- function() x
-    setInverse <- function(inverse) mInverse <<- inverse
-    getInverse <- function() mInverse
+    get <- function() x # returns our original matrix
+    setInverse <- function(inverse) mInverse <<- inverse # assigns the given inverse of our matrix to `mInverse`
+    getInverse <- function() mInverse # returns the inverse of our matrix
     
+    # return our list of attributes
     list(set = set, get = get, setInverse = setInverse, getInverse = getInverse)
 }
 
@@ -26,13 +28,13 @@ makeCacheMatrix <- function(x = matrix()) {
 # @param x the special matrix
 # @return the inversed matrix of the given matrix
 cacheSolve <- function(x, ...) {
-    m <- x$getInverse()
-    if(!is.null(m)) {
+    m <- x$getInverse() # get the inverse of our matrix
+    if(!is.null(m)) { # check if we already have a cached value and return it
         return(m)
     }
-    
-    data <- x$get()
-    m <- solve(data, ...)
-    x$setInverse(m)
-    m
+    # no cached value, onwards to calculation!
+    data <- x$get() # get our original matrix
+    m <- solve(data, ...) # inverse it
+    x$setInverse(m) # cache the inversion
+    m # and return the inversion
 }
